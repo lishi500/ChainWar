@@ -1,7 +1,8 @@
 #pragma once
 #include "cocos2d.h"
 #include <vector>
-#include "Invest.h"
+#include "entity/Invest.h"
+#include "entity/Team.h"
 #include <string> 
 
 using namespace std;
@@ -13,7 +14,15 @@ private:
 	bool isCapital;
 
 public:
-	City(string name, cocos2d::Vec2 pos, bool isCapital);
+	City::City() {
+	};
+	City::City(string name, cocos2d::Vec2 pos, bool isCapital)
+	{
+		this->name = name;
+		this->pos = pos;
+		this->isCapital = isCapital;
+	};
+
 
 	
 	float resourcePool;

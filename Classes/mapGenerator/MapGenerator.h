@@ -1,8 +1,10 @@
-#pragma once
+#ifndef  _MAP_GENERATOR_H_
+#define  _MAP_GENERATOR_H_
 #include <vector>
 #include <math.h>
-#include "../entity/City.h"
 #include "cocos2d.h"
+#include "entity/Team.h"
+
 USING_NS_CC;
 
 class MapGenertor {
@@ -18,7 +20,10 @@ public:
 	void connectNearByCity(float minConnect, float maxConnect);
 	void eliminateExtraCity();
 
-	vector<City> cityList;
+	Team myteam;
+	//vector<City> cityList;
 	float numberOfCity;
 	float expandFactor;
 };
+
+#endif

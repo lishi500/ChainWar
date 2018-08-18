@@ -21,19 +21,19 @@
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\entity\City.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\entity\Invest.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\entity\Team.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\mapGenerator\MapGenerator.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\entity\User.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\mapGenerator\MapGenerator.cpp">
+    <ClCompile Include="..\Classes\entity\City.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\entity\Invest.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,19 +47,19 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\entity\City.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\entity\Invest.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\entity\Team.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mapGenerator\MapGenerator.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\entity\User.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\mapGenerator\MapGenerator.h">
+    <ClInclude Include="..\Classes\entity\Invest.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\entity\City.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

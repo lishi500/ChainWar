@@ -1,4 +1,5 @@
-#pragma once
+#ifndef  _TEAM_H_
+#define  _TEAM_H_
 #include "cocos2d.h"
 #include <string> 
 
@@ -12,5 +13,12 @@ private:
 	float amount; // current total invest 
 
 public:
-	Team(string name);
+	Team::Team() {};
+	Team::Team(string name)
+	{
+		this->name = name;
+	};
+
 };
+
+#endif
