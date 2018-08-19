@@ -1,33 +1,34 @@
-#pragma once
+#ifndef _CITY_H_
+#define _CITY_H_
+
 #include "cocos2d.h"
 #include <vector>
-#include "entity/Invest.h"
-#include "entity/Team.h"
 #include <string> 
 
+#include "entity/Team.h"
+#include "entity/Invest.h"
+#include "entity/User.h"
+
 using namespace std;
+USING_NS_CC;
 
 class City : public cocos2d::Node {
 private: 
-	string name;
+
+public:
+	CREATE_FUNC(City);
+
+	string cityName;
 	cocos2d::Vec2 pos;
 	bool isCapital;
 
-public:
-	City::City() {
-	};
-	City::City(string name, cocos2d::Vec2 pos, bool isCapital)
-	{
-		this->name = name;
-		this->pos = pos;
-		this->isCapital = isCapital;
-	};
-
-
-	
 	float resourcePool;
 	vector<City> connectedCity;
 	vector<Invest> investList;
 	Team team;
+
+	string toString();
+
 };
+#endif // !_CITY_H_
 

@@ -1,30 +1,24 @@
-#pragma once
+#ifndef  _INVEST_H_
+#define  _INVEST_H_
 #include "cocos2d.h"
 #include <vector>
-#include "entity/User.h"
-//#include "entity/City.h"
-#include "entity/Team.h"
+
+USING_NS_CC;
+
+class City;
 
 
 class Invest : public cocos2d::Node {
 private:
-	User *user;
+	int userId;
 	float amountInvested;
 	float amount;
 	float collectRate;
 	float collectDropRate;
-	Team team;
+
 public:
-	Invest::Invest() {
-	};
-	Invest::Invest(User *user)
-	{
-		this->user = user;
-	};
-
-
-
-	float resourcePool;
-	//vector<City> connectedCity;
-	vector<Invest> investList;
+	CREATE_FUNC(Invest);
+	City * city;
 };
+
+#endif

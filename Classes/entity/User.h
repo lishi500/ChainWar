@@ -4,21 +4,20 @@
 #include <vector>
 #include "entity/Team.h"
 
+USING_NS_CC;
 
 class User : public cocos2d::Node {
 private:
 	float userId;
-	//vector<Team> selectedTeam;
+	vector<Team> selectedTeam;
 	float totalInvested;
 	float amount;
 	float collectDropRate;
 	Team myteam;
 
 public:
-	User::User()
-	{
-		this->userId = 5;
-	};
+	CREATE_FUNC(User);
+
 };
 
 #endif

@@ -4,20 +4,20 @@
 #include <string> 
 
 using namespace std;
+USING_NS_CC;
 
 class Team : public cocos2d::Node {
 private:
-	string name;
+public:
+
+	CREATE_FUNC(Team);
+
+	string teamName;
 	float totalMember;
-	float totalInvest; // initial invest
 	float amount; // current total invest 
 
-public:
-	Team::Team() {};
-	Team::Team(string name)
-	{
-		this->name = name;
-	};
+	void setTeamName(string name);
+	string getTeamName();
 
 };
 
