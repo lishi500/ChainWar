@@ -81,7 +81,7 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-	MapGenertor mapGenertor = MapGenertor(3, 4);
+	MapGenertor mapGenertor = MapGenertor(5, 4);
 	//mapGenertor.generateRandomCity();
 
     return true;

@@ -6,8 +6,8 @@
 #include "entity/City.h"
 #include "entity/Team.h"
 
-#define _MAP_HEIGHT 50
-#define _MAP_WIDTH 40
+#define _MAP_HEIGHT 20
+#define _MAP_WIDTH 15
 #define _MAX_DISTANCE 5
 #define _MIN_DISTANCE 3
 
@@ -20,16 +20,11 @@ public:
 		this->numberOfCity = numberOfCity;
 		this->expandFactor = expandFacotr;
 		generateRandomCity();
-		eliminateExtraCity();
 		connectNearByCity(2,6);
 	}
 
 	void generateRandomCity();
 	void connectNearByCity(float minConnect, float maxConnect);
-	void eliminateExtraCity();
-
-
-	
 
 
 	vector<City*> cityList;
@@ -41,6 +36,7 @@ private:
 	cocos2d::Vec2 randomLocation();
 	City* generateCity(string name);
 	City* findNearestCity(City* current);
+	City* findNearestCity(City * current, vector<City*> list);
 	bool cityDistanceSort(City* a, City* b);
 	double distance(City* a, City*);
 
