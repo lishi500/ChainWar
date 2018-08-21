@@ -22,11 +22,7 @@ void MapGenertor::generateRandomCity()
 	}
 
 
-	std::vector<City*>::iterator cityIterator;
-	for (cityIterator = cityList.begin(); cityIterator != cityList.end(); cityIterator++) {
-		string aa = (*cityIterator)->toString();
-		//CCLOG("city pos:  %f,%f\n", (*cityIterator)->pos.x, (*cityIterator)->pos.y);
-	}
+	
 }
 
 
@@ -36,21 +32,43 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 	copy(cityList.begin(), cityList.end(), cityListCopy.begin());
 
 
-	for (int i = 0; i < cityList.size(); i++) {
+	for (size_t i = 0; i < cityList.size(); i++) {
 		CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
 		currentCity = cityList[i];
-		//int numberOfConnectCity = rand() % 6 + 2;
-		//for (int k = 0; k < numberOfConnectCity; k++) {
-		//	
-		//}
+		int numberOfConnectCity = rand() % 2 + 2;
+		vector<City*> nearCity = findNearestKCity(cityList[i], numberOfConnectCity);
+		currentCity->connectedCity = nearCity;
 		
 		CCLOG("nearst city name --- - :  %s \n", &cityListCopy[1]->cityName);
 	}
 
+	std::vector<City*>::iterator cityIterator;
+	for (cityIterator = cityList.begin(); cityIterator != cityList.end(); cityIterator++) {
+		string aa = (*cityIterator)->toString();
+		CCLOG("city pos:  %f,%f, connected city %d\n", (*cityIterator)->pos.x, (*cityIterator)->pos.y, (*cityIterator)->connectedCity.size());
+	}
 }
 
 
+vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
+	vector<City*> cityListCopy(cityList.size());
+	copy(cityList.begin(), cityList.end(), cityListCopy.begin());
 
+	for (int i = 0; i < k; i++) {
+		//CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
+		vector<City*> cityListTemp(cityList.size() - i);
+		copy(cityListCopy.begin() + i, cityListCopy.end(), cityListTemp.begin());
+
+		currentCity = cityList[i];
+		int index = findNearestCityIndex(current, cityListTemp);
+		iter_swap(cityListCopy.begin() + i, cityListCopy.begin() + i + index);
+
+	}
+
+	vector<City*> topK(k);
+	copy(cityListCopy.begin() + 1, cityListCopy.begin() + k, topK.begin());
+	return topK;
+}
 
 cocos2d::Vec2 MapGenertor::randomLocation()
 {
@@ -88,6 +106,24 @@ City * MapGenertor::findNearestCity(City * current)
 {
 	return findNearestCity(current, cityList);
 }
+
+int MapGenertor::findNearestCityIndex(City * current, vector<City*> list)
+{
+	vector<City*>::iterator cityIterator;
+	City * nearestCity = cityList.front();
+	double currentNerstDistance = this->distance(nearestCity, current);
+	int index = 0;
+	for (cityIterator = list.begin(); cityIterator != list.end(); cityIterator++) {
+		double distance = this->distance((*cityIterator), current);
+		if (distance < currentNerstDistance) {
+			currentNerstDistance = distance;
+			nearestCity = (*cityIterator);
+			index = std::distance(list.begin(), cityIterator);
+		}
+	}
+	return index;
+}
+
 
 City * MapGenertor::findNearestCity(City * current, vector<City*> list) {
 	 

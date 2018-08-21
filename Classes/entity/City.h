@@ -23,7 +23,7 @@ public:
 	bool isCapital;
 
 	float resourcePool;
-	vector<City> connectedCity;
+	vector<City*> connectedCity;
 	vector<Invest> investList;
 	Team team;
 

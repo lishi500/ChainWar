@@ -37,6 +37,8 @@ private:
 	City* generateCity(string name);
 	City* findNearestCity(City* current);
 	City* findNearestCity(City * current, vector<City*> list);
+	int findNearestCityIndex(City* current, vector<City*> list);
+	vector<City*> findNearestKCity(City* current, int k);
 	bool cityDistanceSort(City* a, City* b);
 	double distance(City* a, City*);
 
