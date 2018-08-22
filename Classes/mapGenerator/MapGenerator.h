@@ -42,6 +42,9 @@ private:
 	bool cityDistanceSort(City* a, City* b);
 	double distance(City* a, City*);
 
+	vector<City*> routeToCity(City* fromCity, City* toCity);
+	void autoClusterCity(vector<City*> cityList, vector<Team*> teamList);
+	
 };
 
 #endif
