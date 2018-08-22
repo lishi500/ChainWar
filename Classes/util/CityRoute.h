@@ -15,21 +15,23 @@ USING_NS_CC;
 
 class CityRoute {
 public:
-    struct CityWraper {
-        City* current;
-        City* pre;
-        City* next;
+    struct CityWrapper {
+        City* city;
+        CityWrapper* pre;
+        CityWrapper* next;
         float f;
         float g;
         float h;
     };
 
 	vector<City*> findShortestRoute(City* fromCity, City* toCity);
-    vector<CityWraper*> convertToCityWraperList(vector<City*> cityList);
-    vector<City*> convertToCityList(vector<CityWraper*> cityWrapperList);
-    float hDistance(CityWraper* from, CityWraper* to);
-    float gDistance(CityWraper* source, CityWraper* to);
-    float fDistance(CityWraper* source, CityWraper* to);
+    CityWrapper* convertToCityWrapper(City* city);
+    City* converToCity(CityWrapper* cityWrapper);
+    vector<CityWrapper*> convertToCityWrapperList(vector<City*> cityList);
+    vector<City*> convertToCityList(vector<CityWrapper*> cityWrapperList);
+    float hDistance(CityWrapper* from, CityWrapper* to);
+    float gDistance(CityWrapper* source, CityWrapper* to);
+    float fDistance(CityWrapper* source, CityWrapper* to);
     
 };
 
