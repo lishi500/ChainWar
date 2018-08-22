@@ -155,6 +155,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\entity\User.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\mapGenerator\MapGenerator.cpp" />
+    <ClCompile Include="..\Classes\util\CityRoute.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\entity\User.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\mapGenerator\MapGenerator.h" />
+    <ClInclude Include="..\Classes\util\CityRoute.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

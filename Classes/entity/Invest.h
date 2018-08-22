@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 
-class City;
+//class City;
 
 
 class Invest : public cocos2d::Node {
@@ -17,8 +17,9 @@ private:
 	float collectDropRate;
 
 public:
+	//City * city;
+
 	CREATE_FUNC(Invest);
-	City * city;
 };
 
 #endif

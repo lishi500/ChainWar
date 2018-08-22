@@ -17,7 +17,7 @@ class CityRoute {
 public:
     struct CityWrapper {
         City* city;
-        CityWrapper* pre;
+        CityWrapper* prev;
         CityWrapper* next;
         float f;
         float g;
@@ -27,11 +27,13 @@ public:
 	vector<City*> findShortestRoute(City* fromCity, City* toCity);
     CityWrapper* convertToCityWrapper(City* city);
     City* converToCity(CityWrapper* cityWrapper);
-    vector<CityWrapper*> convertToCityWrapperList(vector<City*> cityList);
+    vector<CityRoute::CityWrapper*> convertToCityWrapperList(vector<City*> cityList);
     vector<City*> convertToCityList(vector<CityWrapper*> cityWrapperList);
+
+	float realDistance(City* a, City* b);
     float hDistance(CityWrapper* from, CityWrapper* to);
     float gDistance(CityWrapper* source, CityWrapper* to);
-    float fDistance(CityWrapper* source, CityWrapper* to);
+    float fDistance(CityWrapper* source, CityWrapper* current, CityWrapper* to);
     
 };
 
