@@ -9,18 +9,50 @@ struct cmp
 
 
 vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
-    CityWrapper* fromCityWrapper = convertToCityWrapper(fromCity);
-    CityWrapper* toCityWrapper = convertToCityWrapper(toCity);
+    fromCityWrapper = convertToCityWrapper(fromCity);
+    toCityWrapper = convertToCityWrapper(toCity);
 
-    priority_queue<CityWrapper*, vector<CityWrapper*>,cmp > openQueue;
+    priority_queue<CityWrapper*, vector<CityWrapper*>, cmp>* openQueue;
     vector<CityWrapper* > closeSet;
+
+    vector<CityWrapper*> initialOpenCity = convertToCityWrapperList(fromCity->connectedCity);
+    insertToQueue(fromCityWrapper, fromCityWrapper, openQueue);
+    while (!openQueue->empty()) {
+        CityWrapper* front = openQueue.pop();
+        if (front == toCityWrapper) {
+            return reconstructPath(front);
+        }
+    }
 
 	return vector<City*>();
 }
 
+void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, priority_queue* queue) {
+    for(vector<CityRoute::CityWrapper*>::iterator p = cityWrapperList.begin(); p! = cityWrapperList.end(); p++) {
+        insertToQueue((*p), prevCity, queue);
+    }
+}
 
+void CityRoute::insertToQueue(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, priority_queue* queue) {
+    for(vector<CityRoute::CityWrapper*>::iterator p = queue.begin(); p! = queue.end(); p++) {
+        if (cityWrapper == (*p)) {
+            return;
+        }
+    }
+    cityWrapper->prev = prevCity;
+    cityWrapper->f = fDistance(fromCityWrapper, cityWrapper, toCityWrapper);
+    queue.push(cityWrapper);
+}
+vector<City*> CityRoute::reconstructPath(CityRoute::CityWrapper* cityWrapper) {
+    vector<City*> citys;
 
-
+    do {
+        citys.push_back(cityWrapper->city);
+        cityWrapper = cityWrapper->prev;
+    } while(cityWrapper->prev != NULL);
+    
+    return citys;
+}
 /* city <--> cityWrapper converter */
 CityRoute::CityWrapper* CityRoute::convertToCityWrapper(City* city) {
     CityWrapper* cityWrapper;

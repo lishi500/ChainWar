@@ -7,10 +7,10 @@
 
 #include "entity/City.h"
 
-using namespace std;
+
 
 USING_NS_CC;
-
+using namespace std;
 
 
 class CityRoute {
@@ -24,11 +24,20 @@ public:
         float h;
     };
 
+    CityRoute::CityWrapper* fromCityWrapper;
+    CityRoute::CityWrapper* toCityWrapper;
+
+
 	vector<City*> findShortestRoute(City* fromCity, City* toCity);
+
     CityWrapper* convertToCityWrapper(City* city);
     City* converToCity(CityWrapper* cityWrapper);
     vector<CityRoute::CityWrapper*> convertToCityWrapperList(vector<City*> cityList);
     vector<City*> convertToCityList(vector<CityWrapper*> cityWrapperList);
+    vector<City*> reconstructPath(CityRoute::CityWrapper* cityWrapper);
+
+    void batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, priority_queue* queue);
+    void insertToQueue(CityRoute::CityWrapper* cityWrapper, priority_queue* queue);
 
 	float realDistance(City* a, City* b);
     float hDistance(CityWrapper* from, CityWrapper* to);
