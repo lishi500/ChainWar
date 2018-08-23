@@ -5,7 +5,7 @@
 #include <vector>
 #include <string> 
 
-#include "entity/Invest.h"
+// #include "entity/Invest.h"
 #include "entity/Team.h"
 #include "entity/User.h"
 
@@ -24,7 +24,7 @@ public:
 
 	float resourcePool;
 	vector<City*> connectedCity;
-	vector<Invest*> investList;
+	// vector<Invest> investList;
 	Team team;
 
 	string toString();

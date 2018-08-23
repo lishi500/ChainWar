@@ -27,14 +27,14 @@ vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
 	return vector<City*>();
 }
 
-void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, priority_queue* queue) {
+void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue) {
     for(vector<CityRoute::CityWrapper*>::iterator p = cityWrapperList.begin(); p! = cityWrapperList.end(); p++) {
         insertToQueue((*p), prevCity, queue);
     }
 }
 
-void CityRoute::insertToQueue(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, priority_queue* queue) {
-    for(vector<CityRoute::CityWrapper*>::iterator p = queue.begin(); p! = queue.end(); p++) {
+void CityRoute::insertToQueue(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue) {
+    for(deque<CityRoute::CityWrapper*>::iterator p = queue.begin(); p! = queue.end(); p++) {
         if (cityWrapper == (*p)) {
             return;
         }
