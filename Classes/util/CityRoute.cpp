@@ -11,13 +11,13 @@ struct cmp
 vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
     fromCityWrapper = convertToCityWrapper(fromCity);
     toCityWrapper = convertToCityWrapper(toCity);
-
-    priority_queue<CityWrapper*, vector<CityWrapper*>, cmp>* openQueue;
-    vector<CityWrapper* > closeSet;
+	set<CityWrapper*> openSet;
+    // priority_queue<CityWrapper*, vector<CityWrapper*>, cmp>* openQueue;
+	set<CityWrapper* > closeSet;
 
     vector<CityWrapper*> initialOpenCity = convertToCityWrapperList(fromCity->connectedCity);
-    insertToQueue(fromCityWrapper, fromCityWrapper, openQueue);
-    while (!openQueue->empty()) {
+	insertToSet(fromCityWrapper, fromCityWrapper, openSet);
+    while (!openSet.empty()) {
         CityWrapper* front = openQueue.pop();
         if (front == toCityWrapper) {
             return reconstructPath(front);
@@ -27,21 +27,18 @@ vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
 	return vector<City*>();
 }
 
-void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue) {
-    for(vector<CityRoute::CityWrapper*>::iterator p = cityWrapperList.begin(); p! = cityWrapperList.end(); p++) {
-        insertToQueue((*p), prevCity, queue);
+
+void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
+	vector<CityRoute::CityWrapper*>::iterator p;
+    for(p = cityWrapperList.begin(); p != cityWrapperList.end(); p++) {
+		insertToSet((*p), prevCity, openSet);
     }
 }
 
-void CityRoute::insertToQueue(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue) {
-    for(deque<CityRoute::CityWrapper*>::iterator p = queue.begin(); p! = queue.end(); p++) {
-        if (cityWrapper == (*p)) {
-            return;
-        }
-    }
+void CityRoute::insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
     cityWrapper->prev = prevCity;
     cityWrapper->f = fDistance(fromCityWrapper, cityWrapper, toCityWrapper);
-    queue.push(cityWrapper);
+	openSet.insert(cityWrapper);
 }
 vector<City*> CityRoute::reconstructPath(CityRoute::CityWrapper* cityWrapper) {
     vector<City*> citys;

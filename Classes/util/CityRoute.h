@@ -36,8 +36,8 @@ public:
     vector<City*> convertToCityList(vector<CityWrapper*> cityWrapperList);
     vector<City*> reconstructPath(CityRoute::CityWrapper* cityWrapper);
 
-    void batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue);
-    void insertToQueue(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, priority_queue<CityWrapper*> &queue);
+    void batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
+    void insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
 
 	float realDistance(City* a, City* b);
     float hDistance(CityWrapper* from, CityWrapper* to);
