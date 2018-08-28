@@ -49,7 +49,6 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 	}
 }
 
-
 vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
 	vector<City*> cityListCopy(cityList.size());
 	copy(cityList.begin(), cityList.end(), cityListCopy.begin());

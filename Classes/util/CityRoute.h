@@ -40,6 +40,9 @@ public:
     void batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
     void insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
 
+    void connectCityList(City* fromCity, vector<City*> toCityList);
+    void connectCity(City* fromCity, City* toCity);
+
 	float realDistance(City* a, City* b);
     float hDistance(CityWrapper* from, CityWrapper* to);
     float gDistance(CityWrapper* source, CityWrapper* to);

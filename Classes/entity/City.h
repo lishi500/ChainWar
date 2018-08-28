@@ -21,6 +21,8 @@ public:
 	string cityName;
 	cocos2d::Vec2 pos;
 	bool isCapital;
+	bool isHover = false;
+	bool isHighLight = false;
 
 	float resourcePool;
 	vector<City*> connectedCity;

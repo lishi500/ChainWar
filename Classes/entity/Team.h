@@ -13,6 +13,7 @@ public:
 	CREATE_FUNC(Team);
 
 	string teamName;
+	string color;
 	float totalMember;
 	float amount; // current total invest 
 
