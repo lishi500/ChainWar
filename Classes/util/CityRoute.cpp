@@ -15,14 +15,15 @@ vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
     // priority_queue<CityWrapper*, vector<CityWrapper*>, cmp>* openQueue;
 	set<CityWrapper* > closeSet;
 
-    vector<CityWrapper*> initialOpenCity = convertToCityWrapperList(fromCity->connectedCity);
 	insertToSet(fromCityWrapper, fromCityWrapper, openSet);
     while (!openSet.empty()) {
         CityWrapper* front = getNextOptimalCity(openSet);
-        if (front == toCityWrapper) {
+        if (front->city == toCityWrapper->city) {
             return reconstructPath(front);
         }
-    }
+        vector<CityWrapper*> openCity = convertToCityWrapperList(front->connectedCity);
+        batchInsertToSet(&openCity, front, openSet);
+   }
 
 	return vector<City*>();
 }
@@ -47,7 +48,7 @@ CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> &openSet
     return nextCity;
 }
 
-void CityRoute::batchInsertToQueue(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
+void CityRoute::batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
 	vector<CityRoute::CityWrapper*>::iterator p;
     for(p = cityWrapperList.begin(); p != cityWrapperList.end(); p++) {
 		insertToSet((*p), prevCity, openSet);
