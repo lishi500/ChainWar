@@ -43,6 +43,7 @@ void CityRoute::connectCity(City* fromCity, City* toCity) {
     }
 }
 
+
 CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> &openSet) {
     CityWrapper* nextCity = NULL;
     float smallestF = std::numeric_limits<float>::max();

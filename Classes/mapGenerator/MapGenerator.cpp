@@ -1,4 +1,5 @@
 #include "MapGenerator.h"
+#include "util/CityRoute.h"
 #include <iostream>
 #include <algorithm>
 
@@ -20,8 +21,6 @@ void MapGenertor::generateRandomCity()
 		
 		cityList.push_back(c);
 	}
-
-
 	
 }
 
@@ -30,7 +29,7 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 {
 	vector<City*> cityListCopy(cityList.size());
 	copy(cityList.begin(), cityList.end(), cityListCopy.begin());
-
+	CityRoute cityRoute = CityRoute();
 
 	for (size_t i = 0; i < cityList.size(); i++) {
 		CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
@@ -38,6 +37,7 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 		int numberOfConnectCity = rand() % 2 + 2;
 		vector<City*> nearCity = findNearestKCity(cityList[i], numberOfConnectCity);
 		currentCity->connectedCity = nearCity;
+		cityRoute.connectCityList(currentCity, &nearCity);
 		
 		CCLOG("nearst city name --- - :  %s \n", &cityListCopy[1]->cityName);
 	}
@@ -47,6 +47,19 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 		string aa = (*cityIterator)->toString();
 		CCLOG("city pos:  %f,%f, connected city %d\n", (*cityIterator)->pos.x, (*cityIterator)->pos.y, (*cityIterator)->connectedCity.size());
 	}
+}
+
+void MapGenertor::clusterCity() { // arrange team
+	City* initialCity = getInitialCity();
+
+
+}
+
+City* MapGenertor::getInitialCity() { // left bottom city
+	City* fakeCornerCity;
+	fakeCornerCity->pos = cocos2d::Vec2(0,0);
+	
+	return findNearestCity(fakeCornerCity);
 }
 
 vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
