@@ -60,7 +60,7 @@ City* MapGenertor::getInitialCity() { // left bottom city
 }
 
 vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
-	vector<City*> topK(k);
+	vector<City*> topK;
 	vector<City*> cityListCopy(cityList.size());
 	copy(cityList.begin(), cityList.end(), cityListCopy.begin());
 	cityListCopy.erase(std::remove(cityListCopy.begin(), cityListCopy.end(), current), cityListCopy.end());
@@ -132,7 +132,7 @@ int MapGenertor::findNearestCityIndex(City * current, vector<City*> list)
 City * MapGenertor::findNearestCity(City * current, vector<City*> list) {
 	 
 	std::vector<City*>::iterator cityIterator;
-	City * nearestCity = cityList.front();
+	City * nearestCity = list.front();
 	double currentNerstDistance = this->distance(nearestCity, current);
 	for (cityIterator = list.begin(); cityIterator != list.end(); cityIterator++) {
 		double distance = this->distance((*cityIterator), current);
