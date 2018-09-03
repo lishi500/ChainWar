@@ -31,14 +31,17 @@ vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
 void CityRoute::connectCityList(City* fromCity, vector<City*> toCityList) {
     std::vector<City*>::iterator cityIt;
     for(cityIt = toCityList.begin(); cityIt != toCityList.end(); cityIt++) {
+		if ((*cityIt)->connectedCity.size() > 6) {
+			CCLOG("city name --- - :  %s \n", (*cityIt)->cityName);
+		}
         connectCity(fromCity, *cityIt);
     }
 }
 void CityRoute::connectCity(City* fromCity, City* toCity) {
-    if(std::find(fromCity->connectedCity.begin(), fromCity->connectedCity.end(), toCity) != fromCity->connectedCity.end()) {
+    if(!(std::find(fromCity->connectedCity.begin(), fromCity->connectedCity.end(), toCity) != fromCity->connectedCity.end())) {
         fromCity->connectedCity.push_back(toCity);
     }
-    if(std::find(toCity->connectedCity.begin(), toCity->connectedCity.end(), fromCity) != toCity->connectedCity.end()) {
+    if(!(std::find(toCity->connectedCity.begin(), toCity->connectedCity.end(), fromCity) != toCity->connectedCity.end())) {
         toCity->connectedCity.push_back(fromCity);
     }
 }

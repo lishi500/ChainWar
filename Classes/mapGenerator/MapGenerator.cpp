@@ -33,11 +33,10 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 
 	for (size_t i = 0; i < cityList.size(); i++) {
 		CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
-		currentCity = cityList[i];
 		int numberOfConnectCity = rand() % 2 + 2;
 		vector<City*> nearCity = findNearestKCity(cityList[i], numberOfConnectCity);
-		currentCity->connectedCity = nearCity;
-		cityRoute.connectCityList(currentCity, &nearCity);
+		// cityList[i]->connectedCity = nearCity;
+		cityRoute.connectCityList(cityList[i], nearCity);
 		
 		CCLOG("nearst city name --- - :  %s \n", &cityListCopy[1]->cityName);
 	}
@@ -51,34 +50,27 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 
 void MapGenertor::clusterCity() { // arrange team
 	City* initialCity = getInitialCity();
-
-
 }
 
 City* MapGenertor::getInitialCity() { // left bottom city
 	City* fakeCornerCity;
 	fakeCornerCity->pos = cocos2d::Vec2(0,0);
 	
-	return findNearestCity(fakeCornerCity);
+	return this->findNearestCity(fakeCornerCity);
 }
 
 vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
+	vector<City*> topK(k);
 	vector<City*> cityListCopy(cityList.size());
 	copy(cityList.begin(), cityList.end(), cityListCopy.begin());
+	cityListCopy.erase(std::remove(cityListCopy.begin(), cityListCopy.end(), current), cityListCopy.end());
 
 	for (int i = 0; i < k; i++) {
-		//CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
-		vector<City*> cityListTemp(cityList.size() - i);
-		copy(cityListCopy.begin() + i, cityListCopy.end(), cityListTemp.begin());
-
-		currentCity = cityList[i];
-		int index = findNearestCityIndex(current, cityListTemp);
-		iter_swap(cityListCopy.begin() + i, cityListCopy.begin() + i + index);
-
+		City* nearestCity = findNearestCity(current, cityListCopy);
+		topK.push_back(nearestCity);
+		cityListCopy.erase(std::remove(cityListCopy.begin(), cityListCopy.end(), nearestCity), cityListCopy.end());
 	}
 
-	vector<City*> topK(k);
-	copy(cityListCopy.begin() + 1, cityListCopy.begin() + k, topK.begin());
 	return topK;
 }
 
@@ -151,11 +143,6 @@ City * MapGenertor::findNearestCity(City * current, vector<City*> list) {
 	}
 	return nearestCity;
 
-}
-
-bool MapGenertor::cityDistanceSort(City * a, City * b)
-{
-	return distance(a, currentCity) > distance(b, currentCity);
 }
 
 double MapGenertor::distance(City * a, City * b)

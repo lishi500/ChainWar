@@ -6,9 +6,9 @@
 #include "entity/City.h"
 #include "entity/Team.h"
 
-#define _MAP_HEIGHT 20
-#define _MAP_WIDTH 15
-#define _MAX_DISTANCE 5
+#define _MAP_HEIGHT 600
+#define _MAP_WIDTH 800
+#define _MAX_DISTANCE 8
 #define _MIN_DISTANCE 3
 
 USING_NS_CC;
@@ -28,7 +28,6 @@ public:
 
 
 	vector<City*> cityList;
-	City* currentCity;
 	std::vector<Team*> teamlist;
 	float numberOfCity;
 	float expandFactor;
@@ -45,6 +44,8 @@ private:
 	vector<City*> routeToCity(City* fromCity, City* toCity);
 	void autoClusterCity(vector<City*> cityList, vector<Team*> teamList);
 	
+	City* getInitialCity();
+	void clusterCity();
 };
 
 #endif
