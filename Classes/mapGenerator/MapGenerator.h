@@ -42,7 +42,6 @@ private:
 	double distance(City* a, City*);
 
 	vector<City*> routeToCity(City* fromCity, City* toCity);
-	void autoClusterCity(vector<City*> cityList, vector<Team*> teamList);
 	
 	City* getInitialCity();
 	void clusterCity();
