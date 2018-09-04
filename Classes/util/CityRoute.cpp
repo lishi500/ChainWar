@@ -37,6 +37,7 @@ void CityRoute::connectCityList(City* fromCity, vector<City*> toCityList) {
         connectCity(fromCity, *cityIt);
     }
 }
+
 void CityRoute::connectCity(City* fromCity, City* toCity) {
     if(!(std::find(fromCity->connectedCity.begin(), fromCity->connectedCity.end(), toCity) != fromCity->connectedCity.end())) {
         fromCity->connectedCity.push_back(toCity);
@@ -45,6 +46,7 @@ void CityRoute::connectCity(City* fromCity, City* toCity) {
         toCity->connectedCity.push_back(fromCity);
     }
 }
+
 
 
 CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> &openSet) {
@@ -120,21 +122,47 @@ vector<CityRoute::CityWrapper*> CityRoute::convertToCityWrapperList(vector<City*
 	}
 	return cityWrappers;
 }
-/* distance functions */
 
-float CityRoute::realDistance(City* a, City* b) {
+/* distance functions */
+float CityRoute::totalDistanceToCityGroup(City* fromCity, vector<City*> cityGroup) {
+	float totalDistance = 0;
+	for (int i = 0; i < cityGroup.size(); i++) {
+		totalDistance += realDistanceBetweenCity(fromCity, cityGroup.at(i));
+	}
+
+	return totalDistance;
+}
+
+float CityRoute::realDistanceBetweenCity(City* fromCity, City* toCity) {
+	vector<City*> route = findShortestRoute(fromCity, toCity);
+	float totalDistance = 0;
+	if (route.size() > 1) {
+		City* prev = route.at(0);
+		for (int i = 1; i < route.size(); i++) {
+			City* next = route.at(i);
+			totalDistance += manhattanDistance(prev, next);
+			prev = next;
+		}
+	}
+	else {
+		return 0;
+	}
+	return totalDistance;
+}
+
+float CityRoute::manhattanDistance(City* a, City* b) {
      return sqrt(pow((a->pos.x - b->pos.x), 2) + pow((a->pos.y - b->pos.y), 2));
 }
 
 float CityRoute::hDistance(CityWrapper* from, CityWrapper* to) {
-    return realDistance(from->city, to->city);
+    return manhattanDistance(from->city, to->city);
 }
 
 float CityRoute::gDistance(CityWrapper* source, CityWrapper* current) {
     float distance = 0;
 
     do {    
-        distance += realDistance(current->city, current->prev->city);
+        distance += manhattanDistance(current->city, current->prev->city);
         current = current->prev;
 	} while (current->prev != NULL);
     

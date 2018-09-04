@@ -1,6 +1,8 @@
 #include "TeamGenerator.h"
 #include <iomanip>
 
+using namespace std;
+
 void TeamGenerator::generateTeam(int numberOfTeam) {
     for (int i = 0; i < numberOfTeam; i++) {
         Team* t;
@@ -28,13 +30,13 @@ void TeamGenerator::autoClusterCity(vector<City*> cityList) {
     queue<City*> currentQueue;
 
     getInitialCity(&cityList, &openQueue, &openSet);
-    while (!myqueue.empty()) {
+    while (!openQueue.empty()) {
         City* next = popFromQueueSet(&openQueue, &openSet);
-        if (next->team != NULL) { 
+        if (&(next->team)) {
             continue;
         }
-
-
+		batchAddToQueueSet(next->connectedCity, &openQueue, &openSet);
+		
 
     }
 }
@@ -80,16 +82,23 @@ void TeamGenerator::getInitialCity(vector<City*> *cityList, queue<City*> *queue,
 
 }
 
+void TeamGenerator::batchAddToQueueSet(vector<City*> citys, queue<City*> *queue, set<City*> *set) {
+	for (int i = 0; i <citys.size(); i++) {
+		addToQueueSet(citys.at(i), queue, set);
+	}
+}
+
 void TeamGenerator::addToQueueSet(City* city, queue<City*> *queue, set<City*> *set) {
-    const bool is_in = set->find(element) != set->end();
+    const bool is_in = set->find(city) != set->end();
     if (!is_in) {
         queue->push(city);
-        set->push(city);
+        set->insert(city);
     }
 }
 
 City* TeamGenerator::popFromQueueSet(queue<City*> *queue, set<City*> *set) {
-    City* city = queue->pop();
+	City* city = queue->front();
+	queue->pop();
     set->erase(city);
     return city;
 }

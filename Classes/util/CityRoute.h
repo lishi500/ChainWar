@@ -43,7 +43,9 @@ public:
     void connectCityList(City* fromCity, vector<City*> toCityList);
     void connectCity(City* fromCity, City* toCity);
 
-	float realDistance(City* a, City* b);
+	float totalDistanceToCityGroup(City* fromCity, vector<City*> cityGroup);
+	float realDistanceBetweenCity(City* fromCity, City* toCity);
+	float manhattanDistance(City* a, City* b);
     float hDistance(CityWrapper* from, CityWrapper* to);
     float gDistance(CityWrapper* source, CityWrapper* to);
     float fDistance(CityWrapper* source, CityWrapper* current, CityWrapper* to);

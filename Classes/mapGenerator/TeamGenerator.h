@@ -11,17 +11,24 @@
 
 
 USING_NS_CC;
-using namespace std;
 
-class MapGenertor {
+
+class TeamGenerator {
 public:
+	TeamGenerator(int numberOfTeam)
+	{
+		generateTeam(numberOfTeam);
+	}
+
     vector<Team*> teamList;
 
     void generateTeam(int numberOfTeam);
-    void autoClusterCity(vector<City*> cityList, vector<Team*> teamList);
+    void autoClusterCity(vector<City*> cityList);
     void getInitialCity(vector<City*> *cityList, queue<City*> *queue, set<City*> *set);
+
+	void batchAddToQueueSet(vector<City*> citys, queue<City*> *queue, set<City*> *set);
     void addToQueueSet(City* city, queue<City*> *queue, set<City*> *set);
-    City*  popFromQueueSet(queue<City*> *queue, set<City*> *set);
+    City* popFromQueueSet(queue<City*> *queue, set<City*> *set);
 };
 
 #endif
