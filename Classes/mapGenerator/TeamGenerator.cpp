@@ -1,10 +1,11 @@
 #include "TeamGenerator.h"
+#include "CityRoute.h"
 #include <iomanip>
 
 using namespace std;
 
-void TeamGenerator::generateTeam(int numberOfTeam) {
-    for (int i = 0; i < numberOfTeam; i++) {
+void TeamGenerator::generateTeam() {
+    for (int i = 0; i < _NUMBER_OF_TEAM; i++) {
         Team* t;
         string name;
 		name.append("team ");
@@ -27,22 +28,67 @@ void TeamGenerator::autoClusterCity(vector<City*> cityList) {
     set<City*> openSet;
     set<City*> currentSet;
     queue<City*> openQueue;
-    queue<City*> currentQueue;
+    vector<City*> currentTeamCitys;
+    int teamIndex = 0;
+    Team* currentTeam = teamList.at(teamIndex++);
+
 
     getInitialCity(&cityList, &openQueue, &openSet);
     while (!openQueue.empty()) {
+       
+
         City* next = popFromQueueSet(&openQueue, &openSet);
         if (&(next->team)) {
             continue;
         }
-		batchAddToQueueSet(next->connectedCity, &openQueue, &openSet);
-		
 
+        insertConnectedCityToSet(next, &currentSet);
+       
+        while(!currentSet.empty() && currentTeamCitys.size() < _TEAM_SIZE) {
+            City* nearst = findNearestCityToCurrentTeam(&currentSet, &currentTeamCitys);
+            nearst->team = currentTeam;
+            currentTeamCitys.push_back(nearst);
+            insertConnectedCityToSet(nearst, &currentSet);
+        }
+
+        if (currentTeamCitys.size() >= _TEAM_SIZE) {
+            currentTeam = teamList.at(teamIndex++);
+            moveExtraCitysToOpenQueueSet(&currentSet, &openQueue, &openSet);
+        }
     }
 }
 
-void spreadCity(City* city, queue<City*> *queue, set<City*> *set) {
-    
+void TeamGenerator::insertConnectedCityToSet(City* city, set<City*> *set) {
+     for (int i = 0; i <city->connectedCity.size(); i++) {
+            if (!&(city->connectedCity.at(i)->team)) {
+		        set->insert(city->connectedCity.at(i));
+            }
+	    }
+}
+
+void TeamGenerator::moveExtraCitysToOpenQueueSet(set<City*> *lefted, queue<City*> *queue, set<City*> *set) {
+    std::set<City*>::iterator it;
+    for (it = lefted->begin(); it != lefted->end(); ++it) {
+       addToQueueSet(*it, queue, set);
+    }
+}
+
+City* TeamGenerator::findNearestCityToCurrentTeam(set<City*> *set,  vector<City*> *teamCity) {
+    CityRoute cityRoute = CityRoute();
+    City* nearst;
+    float shortest = numeric_limits<float>::max();
+
+    std::set<City*>::iterator it;
+    for (it = set->begin(); it != set->end(); ++it) {
+       float distance = cityRoute.totalDistanceToCityGroup(*it, *teamCity);
+       if (distance < shortest) {
+           shortest = distance;
+           nearst = *it;
+       }
+    }
+
+    return nearst;
+
 }
 
 void TeamGenerator::getInitialCity(vector<City*> *cityList, queue<City*> *queue, set<City*> *set) {
@@ -81,6 +127,7 @@ void TeamGenerator::getInitialCity(vector<City*> *cityList, queue<City*> *queue,
     addToQueueSet(south, queue, set);
 
 }
+
 
 void TeamGenerator::batchAddToQueueSet(vector<City*> citys, queue<City*> *queue, set<City*> *set) {
 	for (int i = 0; i <citys.size(); i++) {

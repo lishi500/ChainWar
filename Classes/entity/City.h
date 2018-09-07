@@ -27,7 +27,7 @@ public:
 	float resourcePool;
 	vector<City*> connectedCity;
 	// vector<Invest> investList;
-	Team team;
+	Team *team;
 
 	string toString();
 
