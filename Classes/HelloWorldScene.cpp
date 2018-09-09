@@ -25,6 +25,9 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include "mapGenerator/MapGenerator.h"
+#include "mapGenerator/TeamGenerator.h"
+#include "mapGenerator/MapReader.h"
+
 
 USING_NS_CC;
 
@@ -50,9 +53,11 @@ bool HelloWorld::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+	Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
+	auto director = cocos2d::Director::getInstance();
+	auto glview = director->getOpenGLView();
+	Size screenSize = glview->getFrameSize();
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
@@ -81,8 +86,36 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-	MapGenertor mapGenertor = MapGenertor(100, 4);
+	/*DrawNode *drawnode = DrawNode::create();
+	drawnode->drawCircle(Vec2(300, 400), 50, 0, 32, false, 1, 1, Color4F::RED);
+	drawnode->drawCircle(Vec2(500, 500), 150, 0, 32, false, 1, 1, *(new Color4F(100, 100, 100, 100)));
+	this->addChild(drawnode);*/
+
+	//MapGenertor mapGenertor = MapGenertor(120, visibleSize.width, visibleSize.height);
+	//TeamGenerator teamGenerator = TeamGenerator();
+	//teamGenerator.autoClusterCity(&(mapGenertor.cityList));
+	//
+	//Color4F *defaultColor = new Color4F(100, 100, 100, 100);
+
+	//for (int i = 0; i < mapGenertor.cityList.size(); i++) {
+	//	City* city = mapGenertor.cityList.at(i);
+	//	Team* team = city->team;
+	//	DrawNode *drawnode = DrawNode::create();
+	//	drawnode->drawCircle(city->pos, 15, 0, 32, false, 1, 1, (team) ? team->color : *defaultColor);
+	//	//drawnode->drawCircle(city->pos, 5, 0, 1, true, 1, 1, team->color);
+	//	for (int j = 0; j < city->connectedCity.size(); j++) {
+	//		City* toCity = city->connectedCity.at(j);
+	//		drawnode->drawLine(city->pos, toCity->pos, *defaultColor);
+	//	}
+	//	this->addChild(drawnode);
+	//}
+
+	//teamGenerator.printTeam(&(mapGenertor.cityList));
+
 	//mapGenertor.generateRandomCity();
+
+	MapReader mapreader = MapReader();
+	mapreader.readMap();
 
     return true;
 }

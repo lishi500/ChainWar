@@ -32,20 +32,16 @@ void MapGenertor::connectNearByCity(float minConnect, float maxConnect)
 	CityRoute cityRoute = CityRoute();
 
 	for (size_t i = 0; i < cityList.size(); i++) {
-		CCLOG("city name --- - :  %s \n", &cityList[i]->cityName);
 		int numberOfConnectCity = rand() % 2 + 2;
 		vector<City*> nearCity = findNearestKCity(cityList[i], numberOfConnectCity);
-		// cityList[i]->connectedCity = nearCity;
 		cityRoute.connectCityList(cityList[i], nearCity);
-		
-		CCLOG("nearst city name --- - :  %s \n", &cityListCopy[1]->cityName);
 	}
 
 	std::vector<City*>::iterator cityIterator;
-	for (cityIterator = cityList.begin(); cityIterator != cityList.end(); cityIterator++) {
+	/*for (cityIterator = cityList.begin(); cityIterator != cityList.end(); cityIterator++) {
 		string aa = (*cityIterator)->toString();
 		CCLOG("city pos:  %f,%f, connected city %d\n", (*cityIterator)->pos.x, (*cityIterator)->pos.y, (*cityIterator)->connectedCity.size());
-	}
+	}*/
 }
 
 void MapGenertor::clusterCity() { // arrange team
@@ -76,8 +72,10 @@ vector<City*> MapGenertor::findNearestKCity(City* current, int k) {
 
 cocos2d::Vec2 MapGenertor::randomLocation()
 {
-	int posX = rand() % _MAP_WIDTH;
-	int posY = rand() % _MAP_HEIGHT;
+	/*int posX = (rand() % (mapWidth - 200)) + 100;
+	int posY = (rand() % (mapHeight - 150)) + 75;*/
+	int posX = rand() % (this->mapWidth - 400) + 200;
+	int posY = rand() % (this->mapHeight - 300) + 150;
 	return cocos2d::Vec2(posX, posY);
 }
 
@@ -87,6 +85,9 @@ City* MapGenertor::generateCity(string name)
 	c = City::create();
 	c->cityName = name;
 	cocos2d::Vec2 point = randomLocation();
+	if (cityList.size() == 0) {
+		point = cocos2d::Vec2(mapWidth / 2, mapHeight / 2);
+	}
 	c->pos = point;
 	c->isCapital = false;
 

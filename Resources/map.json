@@ -1,0 +1,28 @@
+[
+  {
+    "City": {
+      "cityName": "City1",
+      "pos": {
+        "x": 0,
+        "y": 1
+      },
+      "isCapital": false,
+      "team": {
+        "teamName": "Team1"
+      }
+    }
+  },
+    {
+        "City": {
+            "cityName": "City2",
+            "pos": {
+                "x": 3,
+                "y": 7
+            },
+            "isCapital": true,
+            "team": {
+                "teamName": "Team1"
+            }
+        }
+    }
+]

@@ -12,17 +12,18 @@ vector<City*> CityRoute::findShortestRoute(City* fromCity, City* toCity) {
     fromCityWrapper = convertToCityWrapper(fromCity);
     toCityWrapper = convertToCityWrapper(toCity);
 	set<CityWrapper*> openSet;
+	set<City*> openSetCity;
     // priority_queue<CityWrapper*, vector<CityWrapper*>, cmp>* openQueue;
 	set<CityWrapper* > closeSet;
 
-	insertToSet(fromCityWrapper, fromCityWrapper, openSet);
+	insertToSet(fromCityWrapper, NULL, &openSet, &openSetCity);
     while (!openSet.empty()) {
-        CityWrapper* front = getNextOptimalCity(openSet);
+        CityWrapper* front = getNextOptimalCity(&openSet, &openSetCity);
         if (front->city == toCityWrapper->city) {
             return reconstructPath(front);
         }
         vector<CityWrapper*> openCity = convertToCityWrapperList(front->city->connectedCity);
-        batchInsertToSet(openCity, front, openSet);
+        batchInsertToSet(openCity, front, &openSet, &openSetCity);
    }
 
 	return vector<City*>();
@@ -49,12 +50,12 @@ void CityRoute::connectCity(City* fromCity, City* toCity) {
 
 
 
-CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> &openSet) {
+CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> *openSet, set<City*> *openSetCity) {
     CityWrapper* nextCity = NULL;
     float smallestF = std::numeric_limits<float>::max();
 
     std::set<CityWrapper*>::iterator it;
-    for (it = openSet.begin(); it != openSet.end(); ++it)
+    for (it = openSet->begin(); it != openSet->end(); ++it)
     {
         float nextf = (*it)->f;
         if (nextf < smallestF) {
@@ -63,38 +64,43 @@ CityRoute::CityWrapper* CityRoute::getNextOptimalCity(set<CityWrapper*> &openSet
         }
     }
     if (nextCity != NULL) {
-        openSet.erase(nextCity);
+        openSet->erase(nextCity);
+		openSetCity->erase(nextCity->city);
     }
 
     return nextCity;
 }
 
-void CityRoute::batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
+void CityRoute::batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> *openSet, set<City*> *openSetCity) {
 	vector<CityRoute::CityWrapper*>::iterator p;
     for(p = cityWrapperList.begin(); p != cityWrapperList.end(); p++) {
-		insertToSet((*p), prevCity, openSet);
+		insertToSet((*p), prevCity, openSet, openSetCity);
     }
 }
 
-void CityRoute::insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet) {
-    cityWrapper->prev = prevCity;
-    cityWrapper->f = fDistance(fromCityWrapper, cityWrapper, toCityWrapper);
-	openSet.insert(cityWrapper);
+void CityRoute::insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> *openSet, set<City*> *openSetCity) {
+	if (!(openSetCity->find(cityWrapper->city) != openSetCity->end())) {
+		cityWrapper->prev = prevCity;
+		cityWrapper->f = fDistance(fromCityWrapper, cityWrapper, toCityWrapper);
+		openSet->insert(cityWrapper);
+		openSetCity->insert(cityWrapper->city);
+	}
+	
 }
 
 vector<City*> CityRoute::reconstructPath(CityRoute::CityWrapper* cityWrapper) {
     vector<City*> citys;
 
-    do {
+	while (cityWrapper->prev != NULL) {
         citys.push_back(cityWrapper->city);
         cityWrapper = cityWrapper->prev;
-    } while(cityWrapper->prev != NULL);
+    } 
     
     return citys;
 }
 /* city <--> cityWrapper converter */
 CityRoute::CityWrapper* CityRoute::convertToCityWrapper(City* city) {
-    CityWrapper* cityWrapper;
+    CityWrapper* cityWrapper = new CityWrapper();
     cityWrapper->city = city;
     cityWrapper->prev = NULL;
     cityWrapper->next = NULL;
@@ -161,10 +167,10 @@ float CityRoute::hDistance(CityWrapper* from, CityWrapper* to) {
 float CityRoute::gDistance(CityWrapper* source, CityWrapper* current) {
     float distance = 0;
 
-    do {    
+	while (current->prev != NULL) {
         distance += manhattanDistance(current->city, current->prev->city);
         current = current->prev;
-	} while (current->prev != NULL);
+	} 
     
     return distance;
 };

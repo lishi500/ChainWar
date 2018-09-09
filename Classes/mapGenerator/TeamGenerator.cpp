@@ -1,12 +1,12 @@
 #include "TeamGenerator.h"
-#include "CityRoute.h"
+#include "util/CityRoute.h"
 #include <iomanip>
 
 using namespace std;
 
 void TeamGenerator::generateTeam() {
     for (int i = 0; i < _NUMBER_OF_TEAM; i++) {
-        Team* t;
+        Team* t = new Team();
         string name;
 		name.append("team ");
 		name.append(to_string(i));
@@ -14,54 +14,68 @@ void TeamGenerator::generateTeam() {
         int r = rand() % 255;
         int g = rand() % 255;
         int b = rand() % 255;
-        int color = r<<16 || g<<8 || b;
+        /*int color = r<<16 || g<<8 || b;
         std::stringstream stream;
-        stream << std::hex << color;
+        stream << std::hex << color;*/
 
         t->teamName = name;
-        t->color = stream.str();
+		t->color = Color4F(r, g, b, 1);
         teamList.push_back(t);
     }
+	CCLOG("number of teams--- - :  %d \n", teamList.size());
 }
 
-void TeamGenerator::autoClusterCity(vector<City*> cityList) {
+void TeamGenerator::autoClusterCity(vector<City*> *cityList) {
     set<City*> openSet;
     set<City*> currentSet;
     queue<City*> openQueue;
+	queue<City*> currentQueue;
     vector<City*> currentTeamCitys;
     int teamIndex = 0;
     Team* currentTeam = teamList.at(teamIndex++);
 
 
-    getInitialCity(&cityList, &openQueue, &openSet);
+    getInitialCity(cityList, &openQueue, &openSet);
     while (!openQueue.empty()) {
        
 
         City* next = popFromQueueSet(&openQueue, &openSet);
-        if (&(next->team)) {
+        if (next->team) {
             continue;
         }
 
-        insertConnectedCityToSet(next, &currentSet);
+        insertConnectedCityToSet(next, &currentQueue, &currentSet);
+		//addToQueueSet(next, &currentQueue, &currentSet);
        
         while(!currentSet.empty() && currentTeamCitys.size() < _TEAM_SIZE) {
-            City* nearst = findNearestCityToCurrentTeam(&currentSet, &currentTeamCitys);
-            nearst->team = currentTeam;
-            currentTeamCitys.push_back(nearst);
-            insertConnectedCityToSet(nearst, &currentSet);
+            //City* nearst = findNearestCityToCurrentTeam(&currentSet, &currentTeamCitys);
+			City* nextNearCity = popFromQueueSet(&currentQueue, &currentSet);
+			if (!nextNearCity->team) {
+				currentSet.erase(nextNearCity);
+				nextNearCity->team = currentTeam;
+				currentTeamCitys.push_back(nextNearCity);
+				insertConnectedCityToSet(nextNearCity, &currentQueue, &currentSet);
+			}
         }
 
-        if (currentTeamCitys.size() >= _TEAM_SIZE) {
+        if (currentTeamCitys.size() >= _TEAM_SIZE && teamIndex < _NUMBER_OF_TEAM) {
+			CCLOG("Finish generate team: %s, size %d \n", currentTeam->teamName.c_str(), currentTeamCitys.size());
             currentTeam = teamList.at(teamIndex++);
+			currentTeamCitys.clear();
             moveExtraCitysToOpenQueueSet(&currentSet, &openQueue, &openSet);
+			while (!currentQueue.empty()) currentQueue.pop();
         }
     }
+
+	printTeam(cityList);
+
 }
 
-void TeamGenerator::insertConnectedCityToSet(City* city, set<City*> *set) {
+void TeamGenerator::insertConnectedCityToSet(City* city, queue<City*> *queue, set<City*> *set) {
      for (int i = 0; i <city->connectedCity.size(); i++) {
-            if (!&(city->connectedCity.at(i)->team)) {
+            if (!city->connectedCity.at(i)->team) {
 		        set->insert(city->connectedCity.at(i));
+				queue->push(city->connectedCity.at(i));
             }
 	    }
 }
@@ -71,6 +85,7 @@ void TeamGenerator::moveExtraCitysToOpenQueueSet(set<City*> *lefted, queue<City*
     for (it = lefted->begin(); it != lefted->end(); ++it) {
        addToQueueSet(*it, queue, set);
     }
+	lefted->clear();
 }
 
 City* TeamGenerator::findNearestCityToCurrentTeam(set<City*> *set,  vector<City*> *teamCity) {
@@ -148,4 +163,34 @@ City* TeamGenerator::popFromQueueSet(queue<City*> *queue, set<City*> *set) {
 	queue->pop();
     set->erase(city);
     return city;
+}
+
+vector<City*> TeamGenerator::getCitysByTeam(Team* team, vector<City*> *cityList) {
+	vector<City*> citys;
+	for (int i = 0; i <cityList->size(); i++) {
+		if (cityList->at(i)->team == team) {
+			citys.push_back(cityList->at(i));
+		}
+	}
+	
+	return citys;
+}
+
+void TeamGenerator::printTeam(vector<City*> *cityList) {
+
+	for (int i = 0; i < teamList.size(); i++) {
+		vector<City*> citys = getCitysByTeam(teamList.at(i), cityList);
+		string out;
+		out.append(teamList.at(i)->teamName);
+		out.append(" [");
+		out.append(to_string(citys.size()));
+		out.append("] ");
+
+		for (int j=0; j < citys.size(); j++){
+			out.append(citys.at(j)->cityName);
+			out.append(" | ");
+		}
+		//cout << "Team: " << out << endl;
+		CCLOG("Team: %s \n", out.c_str());
+	}
 }

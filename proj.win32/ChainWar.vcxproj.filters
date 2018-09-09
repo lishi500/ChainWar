@@ -39,6 +39,12 @@
     <ClCompile Include="..\Classes\util\CityRoute.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\mapGenerator\TeamGenerator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\mapGenerator\MapReader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -68,10 +74,24 @@
     <ClInclude Include="..\Classes\util\CityRoute.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\mapGenerator\TeamGenerator.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mapGenerator\MapReader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mapGenerator\json.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
       <Filter>resource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\map.json">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
 </Project>

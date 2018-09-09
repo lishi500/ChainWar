@@ -35,10 +35,10 @@ public:
     vector<CityRoute::CityWrapper*> convertToCityWrapperList(vector<City*> cityList);
     vector<City*> convertToCityList(vector<CityWrapper*> cityWrapperList);
     vector<City*> reconstructPath(CityRoute::CityWrapper* cityWrapper);
-    CityRoute::CityWrapper* getNextOptimalCity( set<CityWrapper*> &openSet);
+    CityRoute::CityWrapper* getNextOptimalCity( set<CityWrapper*> *openSet, set<City*> *openSetCity);
 
-    void batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
-    void insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> &openSet);
+    void batchInsertToSet(vector<CityRoute::CityWrapper*> cityWrapperList, CityRoute::CityWrapper* prevCity, set<CityWrapper*> *openSet, set<City*> *openSetCity);
+    void insertToSet(CityRoute::CityWrapper* cityWrapper, CityRoute::CityWrapper* prevCity, set<CityWrapper*> *openSet, set<City*> *openSetCity);
 
     void connectCityList(City* fromCity, vector<City*> toCityList);
     void connectCity(City* fromCity, City* toCity);
